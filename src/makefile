@@ -17,8 +17,8 @@
 
 build:
 	rpcgen -C load.x
-	gcc -o server rpc_server.c load_svc.c load_xdr.c -lnsl -Wall
-	gcc -o client rpc_client.c load_clnt.c load_xdr.c -lnsl -Wall
+	gcc -o poserver poserver.c load_svc.c load_xdr.c -lnsl -Wall
+	gcc -o poclient poclient.c load_clnt.c load_xdr.c -lnsl -Wall
 
 clean:
-	rm -f client server load.h load_svc.c load_clnt.c
+	rm -f poclient poserver load.h load_svc.c load_clnt.c
