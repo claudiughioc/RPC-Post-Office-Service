@@ -3,7 +3,7 @@
  * It was generated using rpcgen.
  */
 
-#include "load.h"
+#include "po.h"
 
 bool_t
 xdr_data (XDR *xdrs, data *objp)
