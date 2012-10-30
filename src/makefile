@@ -21,4 +21,4 @@ build:
 	gcc -o poclient poclient.c po_clnt.c po_xdr.c -lnsl -Wall
 
 clean:
-	rm -f poclient poserver po.h po_svc.c po_clnt.c
+	rm -f poclient poserver po.h po_svc.c po_clnt.c po_xdr.c

@@ -4,44 +4,42 @@
 
 #include "po.h" 
 #define RMACHINE "localhost"
+#define MAX_COLETS  1024
 
 int main(int argc, char *argv[]){
-    int lat, lon;
+    float lat, lon;
+    int i = 0;
     char *file;
+    struct colet colets[MAX_COLETS];
 
     if (argc != 4) {
         printf("Use lat long filename as command line arguments\n");
         return 1;
     }
-    lat = atoi(argv[1]);
-    lon = atoi(argv[2]);
+    lat = atof(argv[1]);
+    lon = atof(argv[2]);
     file = argv[3];
+
+    FILE *in = fopen(file, "r");
+    while (fscanf(in, "%d %f %f",
+                &colets[i].id,
+                &colets[i].lat,
+                &colets[i].lon) != EOF)
+        i++;
 
 	/* variabila clientului */
 	CLIENT *handle;
-
 	handle=clnt_create(
 		RMACHINE,		/* numele masinii unde se afla server-ul */
-		LOAD_PROG,		/* numele programului disponibil pe server */
-		LOAD_VERS,		/* versiunea programului */
+		PO_PROG,		/* numele programului disponibil pe server */
+		PO_VERS,		/* versiunea programului */
 		"tcp");			/* tipul conexiunii client-server */
-	
-	if(handle == NULL) {
-		perror("");
+	if(handle == NULL)
 		return -1;
-	}
 
-    printf("Ies din client\n");
-
-    /* call to RPC server
-    struct data date;
     struct data* res;
-    date.text = calloc(1000, 1);
-    printf("Introduceti commanda:\n");
-    gets(date.text);
-    res = get_load_1(&date, handle); 
-    printf("%s\n", res->text);
-    */
+    res = get_path_1(&colets[0], handle);
+    printf("Returned %d, %d, %f\n", res->id_source, res->id_dest, res->dist);
 	
 	return 0;
 }

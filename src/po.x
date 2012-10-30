@@ -18,11 +18,19 @@
 #define MAX 1024
 
 struct data {
-    string text<MAX>;
+    int id_source;
+    int id_dest;
+    float dist;
 };
 
-program LOAD_PROG {
-	version LOAD_VERS {
-		 struct data GET_LOAD(struct data) = 1;
+struct colet {
+    int id;
+    float lat;
+    float lon;
+};
+
+program PO_PROG {
+	version PO_VERS {
+		 struct data GET_PATH(struct colet) = 1;
 	} = 1;
 } = 123456789;
