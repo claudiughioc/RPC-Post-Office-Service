@@ -4,6 +4,7 @@
 
 #include "po.h"
 #define INPUT_FILE  "po.dat"
+#define EARTH_RADIUS      6380
 
 struct op {
     int id;
@@ -12,6 +13,15 @@ struct op {
 
 static int N;
 static struct op *offices;
+
+static float form()
+{
+}
+
+static float distance(float lat1, float lon1, float lat2, float lon2)
+{
+    return 2 * EARTH_RADIUS * atan2(sqrt(form / (1 - form)));
+}
 
 void *read_1_svc(void * ret, struct svc_req *cl)
 {
