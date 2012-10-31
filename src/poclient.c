@@ -4,11 +4,11 @@
 
 #include "po.h" 
 #define RMACHINE "localhost"
-#define MAX_COLETS  1024
+#define MAX_COLETS  100000
 
 int main(int argc, char *argv[]){
     float lat, lon;
-    int i = 0;
+    int i = 0, j;
     char *file;
     struct colet colets[MAX_COLETS];
 
@@ -23,9 +23,12 @@ int main(int argc, char *argv[]){
     FILE *in = fopen(file, "r");
     while (fscanf(in, "%d %f %f",
                 &colets[i].id,
-                &colets[i].lat,
-                &colets[i].lon) != EOF)
+                &colets[i].lat_d,
+                &colets[i].lon_d) != EOF) {
+        colets[i].lat_s = lat;
+        colets[i].lon_s = lon;
         i++;
+    }
 
 	/* variabila clientului */
 	CLIENT *handle;
@@ -38,8 +41,11 @@ int main(int argc, char *argv[]){
 		return -1;
 
     struct data* res;
-    res = get_path_1(&colets[0], handle);
-    printf("Returned %d, %d, %f\n", res->id_source, res->id_dest, res->dist);
+    for (j = 0; j < i; j++) {
+        res = get_path_1(&colets[j], handle);
+        printf("Returned %d, %d, %f\n",
+                res->id_source, res->id_dest, res->dist);
+    }
 	
 	return 0;
 }
