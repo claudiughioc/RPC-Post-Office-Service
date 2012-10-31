@@ -21,6 +21,10 @@ int main(int argc, char *argv[]){
     file = argv[3];
 
     FILE *in = fopen(file, "r");
+    if (in == NULL) {
+        printf("Error on opening file %s\n", file);
+        return 1;
+    }
     while (fscanf(in, "%d %f %f",
                 &colets[i].id,
                 &colets[i].lat_d,
@@ -29,6 +33,7 @@ int main(int argc, char *argv[]){
         colets[i].lon_s = lon;
         i++;
     }
+    fclose(in);
 
 	/* variabila clientului */
 	CLIENT *handle;
@@ -40,6 +45,10 @@ int main(int argc, char *argv[]){
 	if(handle == NULL)
 		return -1;
 
+    /* Call server to initialize data */
+    read_1(NULL, handle);
+
+    /* Call server for each package */
     struct data* res;
     for (j = 0; j < i; j++) {
         res = get_path_1(&colets[j], handle);
