@@ -17,8 +17,8 @@
 
 build:
 	rpcgen -C po.x
-	gcc -o poserver poserver.c po_svc.c po_xdr.c -lnsl -Wall
-	gcc -o poclient poclient.c po_clnt.c po_xdr.c -lnsl -Wall
+	gcc -o poserver poserver.c po_svc.c po_xdr.c -lnsl -Wall -lm
+	gcc -o poclient poclient.c po_clnt.c po_xdr.c -lnsl -Wall -lm
 
 clean:
 	rm -f poclient poserver po.h po_svc.c po_clnt.c po_xdr.c

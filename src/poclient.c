@@ -11,6 +11,7 @@ int main(int argc, char *argv[]){
     int i = 0, j;
     char *file;
     struct colet colets[MAX_COLETS];
+    struct colet source;
 
     if (argc != 4) {
         printf("Use lat long filename as command line arguments\n");
@@ -27,10 +28,8 @@ int main(int argc, char *argv[]){
     }
     while (fscanf(in, "%d %f %f",
                 &colets[i].id,
-                &colets[i].lat_d,
-                &colets[i].lon_d) != EOF) {
-        colets[i].lat_s = lat;
-        colets[i].lon_s = lon;
+                &colets[i].lat,
+                &colets[i].lon) != EOF) {
         i++;
     }
     fclose(in);
@@ -46,7 +45,10 @@ int main(int argc, char *argv[]){
 		return -1;
 
     /* Call server to initialize data */
-    read_1(NULL, handle);
+    source.id = 0;
+    source.lat = lat;
+    source.lon = lon;
+    init_1(&source, handle);
 
     /* Call server for each package */
     struct data* res;

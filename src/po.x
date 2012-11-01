@@ -8,15 +8,13 @@ struct data {
 
 struct colet {
     int id;
-    float lat_d;
-    float lon_d;
-    float lat_s;
-    float lon_s;
+    float lat;
+    float lon;
 };
 
 program PO_PROG {
 	version PO_VERS {
 		 struct data GET_PATH(struct colet) = 1;
-         void READ(void) = 2;
+         void INIT(struct colet) = 2;
 	} = 1;
 } = 123456789;
