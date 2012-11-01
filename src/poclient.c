@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
     source.id = 0;
     source.lat = lat;
     source.lon = lon;
-    init_1(&source, handle);
+    int *ret = init_1(&source, handle);
 
     /* Call server for each package */
     struct data* res;

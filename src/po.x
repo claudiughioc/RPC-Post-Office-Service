@@ -15,6 +15,6 @@ struct colet {
 program PO_PROG {
 	version PO_VERS {
 		 struct data GET_PATH(struct colet) = 1;
-         void INIT(struct colet) = 2;
+         int INIT(struct colet) = 2;
 	} = 1;
 } = 123456789;
