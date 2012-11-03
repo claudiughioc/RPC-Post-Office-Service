@@ -1,10 +1,10 @@
 #include <stdio.h> 
 #include <time.h> 
 #include <rpc/rpc.h> 
-
 #include "po.h" 
+
 #define RMACHINE "localhost"
-#define MAX_COLETS  100000
+#define MAX_COLETS  100000      // Maximum number of packages
 
 int main(int argc, char *argv[]){
     float lat, lon;
@@ -13,6 +13,7 @@ int main(int argc, char *argv[]){
     struct colet colets[MAX_COLETS];
     struct colet source;
 
+    // Check command line arguments
     if (argc != 4) {
         printf("Use lat long filename as command line arguments\n");
         return 1;
@@ -21,6 +22,7 @@ int main(int argc, char *argv[]){
     lon = atof(argv[2]);
     file = argv[3];
 
+    // Open and read data from file
     FILE *in = fopen(file, "r");
     if (in == NULL) {
         printf("Error on opening file %s\n", file);
@@ -29,9 +31,8 @@ int main(int argc, char *argv[]){
     while (fscanf(in, "%d %f %f",
                 &colets[i].id,
                 &colets[i].lat,
-                &colets[i].lon) != EOF) {
+                &colets[i].lon) != EOF)
         i++;
-    }
     fclose(in);
 
 	/* variabila clientului */
@@ -44,19 +45,18 @@ int main(int argc, char *argv[]){
 	if(handle == NULL)
 		return -1;
 
-    /* Call server to initialize data */
+    // Call server to initialize data
     source.id = 0;
     source.lat = lat;
     source.lon = lon;
     int *ret = init_1(&source, handle);
 
-    /* Call server for each package */
+    // Call server for each package
     struct data* res;
     for (j = 0; j < i; j++) {
         res = get_path_1(&colets[j], handle);
-        printf("Returned %d, %d, %f\n",
+        printf("%d %d %f\n",
                 res->id_source, res->id_dest, res->dist);
     }
-	
 	return 0;
 }
