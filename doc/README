@@ -1,0 +1,40 @@
+GHIOC CONSTANTIN CLAUDIU 341 C1
+SISTEME DE PROGRAME PENTRU RETELE DE CALCULATOARE   -   TEMA 1
+
+                                                RPC POST OFFICE SERVICE
+
+-------CUPRINS-------
+1. CERINTA
+2. UTILIZARE
+3. IMPLEMENTARE
+4. CONTINUTUL ARHIVEI
+---------------------
+
+
+1. CERINTA
+    Realizati o aplicatie de tip serviciu RPC care permite determinarea rutelor unor colete in sistemul de posta traditionala. Coordonatele oficiilor postale sunt cunoscute de o aplicatie server. Un client mobil, pentru care se cunosc coordonatele geografice are o lista de colete ce vor fi trimise in diverse locatii pe glob. Fiecare colet este identificat prin <ID, lat, long> (identificator, latitudine si longitudinea locatiei de destinatie). Clientul trimite lista de colete sererului, iar acesta va raspunde, pentru fiecare colet in parte, cu traseul urmat si lungimea acestuia.
+
+
+2. UTILIZARE
+    Pentru a crea fisierele executabile se foloseste comanda "make" ("make clean" pentru a sterge fisierele anterioare). Aplicatia client este "poclient", iar serverul este "poserver".
+    Serverul nu primeste niciun argument in linia de comanda:
+        ./poserver
+    Clientul primeste ca argumente in linie de comanda coordonatele sale si un fisier ce contine pe fiecare linie date despre colete: ID, lat, long. De exemplu:
+        ./poclient 45.857 23.98 file
+    Acesta va trimite cate o cerere pentru fiecare colet catre server si afiseaza "ID_oficiu_sursa ID_oficiu_destinatie distanta".
+
+
+3. IMPLEMENTARE
+    In fisierul po.x am definit structuri pentru parametrii si datele intoarse de server. Structura "colet" contine coordonatele geografice ale unui obiect, precum si id-ul acestuia. Structura "data" contine cele trei informatii oferite de server catre client: id-ul oficiului postal sursa, id-ul oficiului postal destinatie si distanta intre sursa si destinatie.
+    Structura "colet" a fost folosita si pentru a descrie locatia initiala a clientului, pentru a nu mai crea alte structuri cu acelasi format.
+
+    Aplicatia server ofera catre clienti doua functii.
+    Prima se numeste INIT si primeste ca parametru o structura de tip "colet" cu locatia initiala a clientului. Aceasta locatie va fi salvata intr-o variabila statica in codul serverului, pentru a fi folosita ulterior. In aceasta functie se deschide fisierul "po.dat" si se stocheaza intr-un vector detaliile oficiilor postale.
+    A doua functie se numeste GET_PATH si primeste de asemenea o structura de tip colet ca parametru. Serverul parcurge lista de oficii postale si determina doua locatii optime. Prima, cea mai apropiata de client, a doua, cea mai apropiata de destinatie. Distantele sunt calculate folosind formula din enunt. Suma distantelor dintre cele 4 puncte, precum si id-urile oficiilor postale corespunzatoare clientului si destinatiei sunt intoarse prin structura "data".
+    Celelalte doua functii statice: "formula" si "distance" ajuta la calcularea distantei dintre doua puncte, cunoscandu-se coordonatele lor.
+    
+    Aplicatia client citeste datele despre colete din fisier, apeleaza functia INIT a serverului, oferindu-i o structura cu coordonatele sale si, pentru fiecare colet, apeleaza functia GET_PATH. Rezultatele sunt afisate la stdout.
+
+
+4. CONTINUTUL ARHIVEI
+    Arhiva contine fisierele sursa pentru client si server: "poclient.c", "poserver.c", fisierele "po.x", "makefile" si "README". 
